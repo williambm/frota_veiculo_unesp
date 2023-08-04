@@ -1,6 +1,5 @@
 package br.unesp.frotaveiculos.adapters.db.model;
 
-import br.unesp.frotaveiculos.adapters.db.model.enumerations.Fabricante;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,29 +10,34 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "veiculos")
+@Table(name = "viagem")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Veiculo {
+public class Viagem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String placa;
-    @Enumerated(EnumType.STRING)
-    private Fabricante fabricante;
-    private String modelo;
-    private Integer totalPassageiros;
-    private Long quilometragem;
-    private Integer anoFabricacao;
-    private Boolean possuiCacamba;
+
+    @ManyToOne
+    @JoinColumn(name = "veiculo_id")
+    private Veiculo veiculo;
+
+    //Ver se jogo no @mtm
+//    @ManyToOne
+//    @JoinColumn(name = "funcionario_id")
+//    private Funcionario funcionario;
+
+    @Embedded
+    private Endereco origem;
+//    @Embedded
+//    private Endereco destino;
+
 
     //Auditoria
     @CreationTimestamp
     private LocalDateTime dateCreate;
     @UpdateTimestamp
     private LocalDateTime dateUpdate;
-
-
 }
