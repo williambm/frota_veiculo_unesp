@@ -1,7 +1,7 @@
 package br.unesp.frotaveiculos.adapters.controller.handler;
 
 import br.unesp.frotaveiculos.adapters.db.exceptions.FuncionarioDBInexistenteException;
-import br.unesp.frotaveiculos.adapters.dto.ErroPadraoDTO;
+import br.unesp.frotaveiculos.dto.ErroPadraoDTO;
 import br.unesp.frotaveiculos.usecase.funcionario.exceptions.FuncionarioJaCadastradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

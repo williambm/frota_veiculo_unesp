@@ -1,15 +1,16 @@
 package br.unesp.frotaveiculos.adapters.db.model;
 
-import br.unesp.frotaveiculos.adapters.db.model.enumerations.Unidade;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import br.unesp.frotaveiculos.adapters.db.model.enumerations.PerfilFuncionario;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "funcionarios")
@@ -25,11 +26,13 @@ public class Funcionario {
     private LocalDate dataAdmissao;
     private LocalDate dataNascimento;
     private String funcao;
+    @Enumerated(EnumType.STRING)
+    private PerfilFuncionario perfilFuncionario;
 
-    //TODO: Pensar se vale a pena - acho que não
-    /*Pensar se coloco o "campus" para poder retirar relatório por campus, posso justificar aqui que o piloto é da reitoria e depois podemos abrir para os campus controlando a frota das
-    unidades*/
-   // private Unidade unidadeLotacao;
-
+    //Auditoria
+    @CreationTimestamp
+    private LocalDateTime dateCreate;
+    @UpdateTimestamp
+    private LocalDateTime dateUpdate;
 
 }

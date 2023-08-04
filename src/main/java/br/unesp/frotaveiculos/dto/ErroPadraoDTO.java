@@ -1,4 +1,4 @@
-package br.unesp.frotaveiculos.adapters.dto;
+package br.unesp.frotaveiculos.dto;
 
 import lombok.Builder;
 import lombok.Data;

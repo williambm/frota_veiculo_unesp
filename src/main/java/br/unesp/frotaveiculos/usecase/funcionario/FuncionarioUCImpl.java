@@ -1,8 +1,8 @@
 package br.unesp.frotaveiculos.usecase.funcionario;
 
 import br.unesp.frotaveiculos.adapters.db.ports.FuncionarioPersist;
-import br.unesp.frotaveiculos.adapters.dto.FuncionarioDTO;
-import br.unesp.frotaveiculos.adapters.dto.FuncionarioUpdateDTO;
+import br.unesp.frotaveiculos.dto.FuncionarioDTO;
+import br.unesp.frotaveiculos.dto.FuncionarioUpdateDTO;
 import br.unesp.frotaveiculos.usecase.funcionario.exceptions.FuncionarioJaCadastradoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

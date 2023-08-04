@@ -1,4 +1,4 @@
-package br.unesp.frotaveiculos.adapters.dto;
+package br.unesp.frotaveiculos.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -13,4 +13,5 @@ public class FuncionarioDTO {
     private LocalDate dataAdmissao;
     private LocalDate dataNascimento;
     private String funcao;
+    private String perfil;
 }

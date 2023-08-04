@@ -1,7 +1,7 @@
 package br.unesp.frotaveiculos.adapters.controller;
 
-import br.unesp.frotaveiculos.adapters.dto.FuncionarioDTO;
-import br.unesp.frotaveiculos.adapters.dto.FuncionarioUpdateDTO;
+import br.unesp.frotaveiculos.dto.FuncionarioDTO;
+import br.unesp.frotaveiculos.dto.FuncionarioUpdateDTO;
 import br.unesp.frotaveiculos.usecase.funcionario.FuncionarioUC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

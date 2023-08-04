@@ -1,13 +1,14 @@
 package br.unesp.frotaveiculos.adapters.db.ports.impl;
 
+import br.unesp.frotaveiculos.adapters.config.mapstruct.MapperFuncionario;
 import br.unesp.frotaveiculos.adapters.db.exceptions.FuncionarioDBInexistenteException;
 import br.unesp.frotaveiculos.adapters.db.model.Funcionario;
+import br.unesp.frotaveiculos.adapters.db.model.enumerations.PerfilFuncionario;
 import br.unesp.frotaveiculos.adapters.db.ports.FuncionarioPersist;
 import br.unesp.frotaveiculos.adapters.db.repository.FuncionarioRepository;
-import br.unesp.frotaveiculos.adapters.dto.FuncionarioDTO;
-import br.unesp.frotaveiculos.adapters.dto.FuncionarioUpdateDTO;
+import br.unesp.frotaveiculos.dto.FuncionarioDTO;
+import br.unesp.frotaveiculos.dto.FuncionarioUpdateDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,13 +23,15 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
 
     @Autowired
     private FuncionarioRepository repository;
+    @Autowired
+    private MapperFuncionario mapperFuncionario;
 
     @Override
     public FuncionarioDTO cadastrarFuncionario(FuncionarioDTO funcionarioDTO) {
         try {
             Funcionario entity = converteDTOEmEntidade(funcionarioDTO);
             entity = repository.save(entity);
-            funcionarioDTO = converteEntidadeEmDTO(entity);
+            funcionarioDTO = mapperFuncionario.convertEntidadeEmDTO(entity);
         } catch (Exception erro) {
             throw erro;
             //TODO: Antes de lançar exception Logar erro
@@ -49,7 +52,7 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
     @Override
     public Page<FuncionarioDTO> listarFuncionariosPaginado(Pageable pageable) {
         Page<Funcionario> listaDeFuncionarios = repository.findAll(pageable);
-        return listaDeFuncionarios.map(entidade -> converteEntidadeEmDTO(entidade));
+        return listaDeFuncionarios.map(entidade -> mapperFuncionario.convertEntidadeEmDTO(entidade));
     }
 
     @Override
@@ -58,33 +61,24 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
                 () -> new FuncionarioDBInexistenteException()
                 //Logar que não foi encontrado
         );
-        return converteEntidadeEmDTO(entidade);
+        return mapperFuncionario.convertEntidadeEmDTO(entidade);
     }
 
     @Override
     public FuncionarioDTO atualizar(Long id, FuncionarioUpdateDTO updateDTO) {
         try {
             Funcionario entidade = repository.findById(id).orElseThrow();
-            //TODO: Trocar pelo modelMapper porque esse cara não ignora valores nulos
-            BeanUtils.copyProperties(updateDTO,entidade);
+
+            entidade = mapperFuncionario.convertUpdateDtoEmEntidade(entidade, updateDTO);
             entidade = repository.save(entidade);
-            return converteEntidadeEmDTO(entidade);
-        }catch(NoSuchElementException ex){
+
+            return mapperFuncionario.convertEntidadeEmDTO(entidade);
+        } catch (NoSuchElementException ex) {
             throw ex;
         }
     }
 
-    //Todo: Se der Tempo colocar aqui um Conversor como o ModelMapper para abstrair os Builders
-    private static FuncionarioDTO converteEntidadeEmDTO(Funcionario entity) {
-        return FuncionarioDTO.builder()
-                .matricula(entity.getMatricula())
-                .nome(entity.getNome())
-                .dataAdmissao(entity.getDataAdmissao())
-                .dataNascimento(entity.getDataNascimento())
-                .funcao(entity.getFuncao())
-                .build();
-    }
-
+    //TODO: agora o projeto já tem o MapStruct - depois passar este Builder para Lá.
     private static Funcionario converteDTOEmEntidade(FuncionarioDTO funcionarioDTO) {
         return Funcionario.builder()
                 .matricula(funcionarioDTO.getMatricula())
@@ -92,6 +86,8 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
                 .dataAdmissao(funcionarioDTO.getDataAdmissao())
                 .dataNascimento(funcionarioDTO.getDataNascimento())
                 .funcao(funcionarioDTO.getFuncao())
+                .perfilFuncionario(PerfilFuncionario.valueOf(funcionarioDTO.getPerfil()))
                 .build();
     }
+
 }

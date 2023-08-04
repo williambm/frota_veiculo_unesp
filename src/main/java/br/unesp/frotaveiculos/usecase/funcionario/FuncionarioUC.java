@@ -1,7 +1,7 @@
 package br.unesp.frotaveiculos.usecase.funcionario;
 
-import br.unesp.frotaveiculos.adapters.dto.FuncionarioDTO;
-import br.unesp.frotaveiculos.adapters.dto.FuncionarioUpdateDTO;
+import br.unesp.frotaveiculos.dto.FuncionarioDTO;
+import br.unesp.frotaveiculos.dto.FuncionarioUpdateDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
