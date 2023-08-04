@@ -13,13 +13,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-@Service
+@Component
 @RequiredArgsConstructor
 public class FuncionarioPersistImpl implements FuncionarioPersist {
 
@@ -62,10 +62,7 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
 
     @Override
     public FuncionarioDTO buscarPorId(Long id) {
-        Funcionario entidade = repository.findById(id).orElseThrow(
-                () -> new FuncionarioDBInexistenteException()
-                //Logar que não foi encontrado
-        );
+        Funcionario entidade = repository.findById(id).orElseThrow(FuncionarioDBInexistenteException::new);
         return mapperFuncionario.convertEntidadeEmDTO(entidade);
     }
 
@@ -79,6 +76,7 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
 
             return mapperFuncionario.convertEntidadeEmDTO(entidade);
         } catch (NoSuchElementException ex) {
+            //TODO: Atualizar funcionario inexistente está ocasionando erro 500 - mapear
             throw ex;
         } catch (IllegalArgumentException ex) {
             throw new PerfilInvalidoDBException(MessageFormat.format(

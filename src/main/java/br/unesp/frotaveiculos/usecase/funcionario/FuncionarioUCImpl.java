@@ -13,16 +13,20 @@ import org.springframework.stereotype.Service;
 import java.text.MessageFormat;
 
 @Service
-@RequiredArgsConstructor
 public class FuncionarioUCImpl implements FuncionarioUC {
 
     @Autowired
     private FuncionarioPersist funcionarioPersist;
 
+    /**
+     * Regra de negócio - não deve permitir seguir jornada caso o usuário já exista em nossas bases.
+     *
+     * @param funcionarioDTO
+     * @return
+     */
     @Override
     public FuncionarioDTO cadastrarFuncionario(FuncionarioDTO funcionarioDTO) {
 
-        //todo: Não deve cadastrar se o recurso já for existente na base de dados, informando uma msg para a API e FRONT
         if (funcionarioPersist.isFuncionarioCadastrado(funcionarioDTO)) {
             throw new FuncionarioJaCadastradoException(
                     MessageFormat.format(

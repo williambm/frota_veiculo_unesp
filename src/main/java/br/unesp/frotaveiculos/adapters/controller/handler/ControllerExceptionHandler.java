@@ -1,8 +1,11 @@
 package br.unesp.frotaveiculos.adapters.controller.handler;
 
+import br.unesp.frotaveiculos.adapters.db.exceptions.FabricanteInvalidoDBException;
 import br.unesp.frotaveiculos.adapters.db.exceptions.FuncionarioDBInexistenteException;
 import br.unesp.frotaveiculos.adapters.db.exceptions.PerfilInvalidoDBException;
+import br.unesp.frotaveiculos.adapters.db.exceptions.VeiculoDBInexistenteException;
 import br.unesp.frotaveiculos.dto.ErroPadraoDTO;
+import br.unesp.frotaveiculos.usecase.exceptions.VeiculoUCExcedePrazoFabricacao;
 import br.unesp.frotaveiculos.usecase.funcionario.exceptions.FuncionarioJaCadastradoException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +24,7 @@ public class ControllerExceptionHandler {
         ErroPadraoDTO dto = ErroPadraoDTO.builder()
                 .dataHoraErro(LocalDateTime.now())
                 .status(status.value())
-                .error("Funcionário já cadastrado em nosso Sistema")
+                .error("Erro de Negócio - Funcionário")
                 .message(ex.getMessage())
                 .build();
 
@@ -48,4 +51,40 @@ public class ControllerExceptionHandler {
 
         return ResponseEntity.status(status).body(dto);
     }
+
+    @ExceptionHandler(VeiculoUCExcedePrazoFabricacao.class)
+    public ResponseEntity<ErroPadraoDTO> veiculoExcedePrazoFabricacao(VeiculoUCExcedePrazoFabricacao ex) {
+        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+
+        ErroPadraoDTO dto = ErroPadraoDTO.builder()
+                .dataHoraErro(LocalDateTime.now())
+                .status(status.value())
+                .error("Erro de Negócio - Veículos")
+                .message(ex.getMessage())
+                .build();
+
+        return ResponseEntity.status(status).body(dto);
+    }
+
+    @ExceptionHandler(VeiculoDBInexistenteException.class)
+    public ResponseEntity<ErroPadraoDTO> veiculoNaoEncontradoPorId(VeiculoDBInexistenteException ex) {
+        HttpStatus status = HttpStatus.NO_CONTENT;
+
+        return ResponseEntity.status(status).build();
+    }
+
+    @ExceptionHandler(FabricanteInvalidoDBException.class)
+    public ResponseEntity<ErroPadraoDTO> veiculoModeloInvalido(FabricanteInvalidoDBException ex) {
+        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+
+        ErroPadraoDTO dto = ErroPadraoDTO.builder()
+                .dataHoraErro(LocalDateTime.now())
+                .status(status.value())
+                .error("Atribuição inválida de Modelo de Veículo")
+                .message(ex.getMessage())
+                .build();
+
+        return ResponseEntity.status(status).body(dto);
+    }
+
 }
