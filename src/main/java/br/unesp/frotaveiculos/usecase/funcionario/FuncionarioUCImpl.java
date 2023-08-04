@@ -49,4 +49,9 @@ public class FuncionarioUCImpl implements FuncionarioUC {
     public FuncionarioDTO atualizar(Long id, FuncionarioUpdateDTO updateDTO) {
         return funcionarioPersist.atualizar(id, updateDTO);
     }
+
+    @Override
+    public void deletar(Long id) {
+        funcionarioPersist.deletar(id);
+    }
 }

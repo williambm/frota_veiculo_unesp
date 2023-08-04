@@ -3,6 +3,7 @@ package br.unesp.frotaveiculos.adapters.controller;
 import br.unesp.frotaveiculos.dto.FuncionarioDTO;
 import br.unesp.frotaveiculos.dto.FuncionarioUpdateDTO;
 import br.unesp.frotaveiculos.usecase.funcionario.FuncionarioUC;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,5 +43,12 @@ public class FuncionarioController {
         FuncionarioDTO funcionarioDTO = funcionarioUC.atualizar(id, updateDTO);
 
         return ResponseEntity.ok().body(funcionarioDTO);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> deletarFuncionario(@PathVariable Long id) {
+        funcionarioUC.deletar(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

@@ -14,4 +14,6 @@ public interface FuncionarioUC {
     FuncionarioDTO buscarPorId(Long id);
 
     FuncionarioDTO atualizar(Long id, FuncionarioUpdateDTO updateDTO);
+
+    void deletar(Long id);
 }

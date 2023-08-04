@@ -2,6 +2,7 @@ package br.unesp.frotaveiculos.adapters.db.ports.impl;
 
 import br.unesp.frotaveiculos.adapters.config.mapstruct.MapperFuncionario;
 import br.unesp.frotaveiculos.adapters.db.exceptions.FuncionarioDBInexistenteException;
+import br.unesp.frotaveiculos.adapters.db.exceptions.PerfilInvalidoDBException;
 import br.unesp.frotaveiculos.adapters.db.model.Funcionario;
 import br.unesp.frotaveiculos.adapters.db.model.enumerations.PerfilFuncionario;
 import br.unesp.frotaveiculos.adapters.db.ports.FuncionarioPersist;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.text.MessageFormat;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -32,9 +34,12 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
             Funcionario entity = converteDTOEmEntidade(funcionarioDTO);
             entity = repository.save(entity);
             funcionarioDTO = mapperFuncionario.convertEntidadeEmDTO(entity);
-        } catch (Exception erro) {
-            throw erro;
-            //TODO: Antes de lançar exception Logar erro
+        } catch (IllegalArgumentException ex) {
+            throw new PerfilInvalidoDBException(MessageFormat.format(
+                    "O perfil {0} não está cadastrado em nossas bases, o que invalida o processo de inserção deste registro.", funcionarioDTO.getPerfil()
+            ));
+        } catch (Exception erroGeneralizado) {
+            throw erroGeneralizado;
         }
         return funcionarioDTO;
     }
@@ -75,7 +80,16 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
             return mapperFuncionario.convertEntidadeEmDTO(entidade);
         } catch (NoSuchElementException ex) {
             throw ex;
+        } catch (IllegalArgumentException ex) {
+            throw new PerfilInvalidoDBException(MessageFormat.format(
+                    "O perfil {0} não está cadastrado em nossas bases, o que invalida o processo de atualização deste registro.", updateDTO.getPerfil()
+            ));
         }
+    }
+
+    @Override
+    public void deletar(Long id) {
+        repository.deleteById(id);
     }
 
     //TODO: agora o projeto já tem o MapStruct - depois passar este Builder para Lá.
