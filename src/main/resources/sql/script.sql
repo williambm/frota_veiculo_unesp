@@ -1,13 +1,10 @@
---#Criar base no postgres não está rolando no dbaver, reaver isso!
-create database frota_veiculos;
+-- Cria o banco de dados "frota_veiculos"
+CREATE DATABASE frota_veiculos;
 
----
+-- Obs.: Set o BD criado como default e siga com as tabelas do script
 
-USE frota_veiculos;
 
-select * from funcionarios f ;
 
-select * from veiculos_frota vf ;
 
 
 
