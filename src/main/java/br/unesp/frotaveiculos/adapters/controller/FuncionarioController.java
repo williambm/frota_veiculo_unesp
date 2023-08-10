@@ -22,6 +22,7 @@ public class FuncionarioController {
     public ResponseEntity<FuncionarioDTO> cadastrarFuncionario(@RequestBody FuncionarioDTO funcionarioDTO) {
         FuncionarioDTO funcionarioCadastrado = funcionarioUC.cadastrarFuncionario(funcionarioDTO);
 
+
         return ResponseEntity.status(HttpStatus.CREATED).body(funcionarioCadastrado);
     }
 
