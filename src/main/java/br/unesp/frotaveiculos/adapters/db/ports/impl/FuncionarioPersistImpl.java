@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
@@ -32,7 +33,15 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
     public FuncionarioDTO cadastrarFuncionario(FuncionarioDTO funcionarioDTO) {
         try {
             Funcionario entity = converteDTOEmEntidade(funcionarioDTO);
+            String senhaHash = new BCryptPasswordEncoder().encode(funcionarioDTO.getSenha());
+            System.out.println(senhaHash);
+            entity.setSenha(senhaHash);
+            //Encode de senha em BCRYPT
+            //entity.setSenha(new BCryptPasswordEncoder().encode(entity.getSenha()));
+            System.out.println(entity.getSenha());
+
             entity = repository.save(entity);
+            System.out.println(entity);
             funcionarioDTO = mapperFuncionario.convertEntidadeEmDTO(entity);
         } catch (IllegalArgumentException ex) {
             throw new PerfilInvalidoDBException(MessageFormat.format(
@@ -95,6 +104,8 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
         return Funcionario.builder()
                 .matricula(funcionarioDTO.getMatricula())
                 .nome(funcionarioDTO.getNome())
+                .email(funcionarioDTO.getEmail())
+                .senha(funcionarioDTO.getSenha())
                 .dataAdmissao(funcionarioDTO.getDataAdmissao())
                 .dataNascimento(funcionarioDTO.getDataNascimento())
                 .funcao(funcionarioDTO.getFuncao())

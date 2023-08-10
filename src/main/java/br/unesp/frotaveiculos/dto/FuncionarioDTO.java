@@ -10,6 +10,8 @@ import java.time.LocalDate;
 public class FuncionarioDTO {
     private Long matricula;
     private String nome;
+    private String email;
+    private String senha;
     private LocalDate dataAdmissao;
     private LocalDate dataNascimento;
     private String funcao;
