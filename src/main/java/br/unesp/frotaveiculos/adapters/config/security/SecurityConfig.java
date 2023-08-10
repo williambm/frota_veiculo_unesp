@@ -29,8 +29,8 @@ public class SecurityConfig {
                 .csrf(csrf-> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests( auth -> auth
-                        .requestMatchers(HttpMethod.GET,"/veiculos").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/veiculos").hasRole("MOTORISTA")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(

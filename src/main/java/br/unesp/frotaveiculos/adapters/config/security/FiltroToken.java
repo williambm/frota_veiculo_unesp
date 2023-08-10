@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -26,7 +27,8 @@ public class FiltroToken extends OncePerRequestFilter {
         //Pegamos do Header da requisição o Authorization com o token
         String token = request.getHeader("Authorization");
 
-        if(token!=null || token!=""){
+    //        if(token!=null || token!=""){
+        if(!ObjectUtils.isEmpty(token)){
             token = token.replace("Bearer ", "");
             String subject = tokenManagerService.getSubject(token); //valida o token e retorna o subject que é o login
 
