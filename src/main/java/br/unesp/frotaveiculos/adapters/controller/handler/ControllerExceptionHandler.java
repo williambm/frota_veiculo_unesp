@@ -7,6 +7,7 @@ import br.unesp.frotaveiculos.adapters.db.exceptions.VeiculoDBInexistenteExcepti
 import br.unesp.frotaveiculos.dto.ErroPadraoDTO;
 import br.unesp.frotaveiculos.usecase.exceptions.VeiculoUCExcedePrazoFabricacao;
 import br.unesp.frotaveiculos.usecase.funcionario.exceptions.FuncionarioJaCadastradoException;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -87,4 +88,18 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(status).body(dto);
     }
 
+
+    @ExceptionHandler(SignatureVerificationException.class)
+    public ResponseEntity<ErroPadraoDTO> tokenInvalido(SignatureVerificationException ex) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+
+        ErroPadraoDTO dto = ErroPadraoDTO.builder()
+                .dataHoraErro(LocalDateTime.now())
+                .status(status.value())
+                .error("Token Inválido")
+                .message(ex.getMessage())
+                .build();
+
+        return ResponseEntity.status(status).body(dto);
+    }
 }

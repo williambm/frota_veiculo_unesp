@@ -31,6 +31,8 @@ public class AuthController {
         var usuario = (Funcionario) autenticacao.getPrincipal();
 
         String token = tokenService.gerarToken(usuario);
-        return ResponseEntity.ok().body(token);
+        return ResponseEntity.ok()
+                .header("Authorization","Bearer "+token)
+                .body(token);
     }
 }
