@@ -85,8 +85,7 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
 
             return mapperFuncionario.convertEntidadeEmDTO(entidade);
         } catch (NoSuchElementException ex) {
-            //TODO: Atualizar funcionario inexistente está ocasionando erro 500 - mapear
-            throw ex;
+            throw new FuncionarioDBInexistenteException();
         } catch (IllegalArgumentException ex) {
             throw new PerfilInvalidoDBException(MessageFormat.format(
                     "O perfil {0} não está cadastrado em nossas bases, o que invalida o processo de atualização deste registro.", updateDTO.getPerfil()

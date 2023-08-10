@@ -30,7 +30,14 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests( auth -> auth
                         .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/veiculos").hasRole("MOTORISTA")
+                        .requestMatchers(HttpMethod.GET,"/veiculos").hasRole("PASSAGEIRO")
+                        .requestMatchers(HttpMethod.PUT,"/veiculos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,"/veiculos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/veiculos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/funcionarios").hasRole("PASSAGEIRO")
+                        .requestMatchers(HttpMethod.POST,"/funcionarios").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"/funcionarios/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/funcionarios/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(

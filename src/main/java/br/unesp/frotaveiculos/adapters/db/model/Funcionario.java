@@ -47,9 +47,16 @@ public class Funcionario implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (perfilFuncionario.equals(PerfilFuncionario.ADMIN)) {
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_PASSAGEIRO"));
+            return List.of(
+                    new SimpleGrantedAuthority("ROLE_ADMIN"),
+                    new SimpleGrantedAuthority("ROLE_MOTORISTA"),
+                    new SimpleGrantedAuthority("ROLE_PASSAGEIRO")
+            );
         } else if (perfilFuncionario.equals(PerfilFuncionario.MOTORISTA)) {
-            return List.of(new SimpleGrantedAuthority("ROLE_MOTORISTA"), new SimpleGrantedAuthority("ROLE_PASSAGEIRO"));
+            return List.of(
+                    new SimpleGrantedAuthority("ROLE_MOTORISTA"),
+                    new SimpleGrantedAuthority("ROLE_PASSAGEIRO")
+            );
         } else {
             return List.of(new SimpleGrantedAuthority("ROLE_PASSAGEIRO"));
         }

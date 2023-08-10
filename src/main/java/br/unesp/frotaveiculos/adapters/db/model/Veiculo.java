@@ -2,9 +2,7 @@ package br.unesp.frotaveiculos.adapters.db.model;
 
 import br.unesp.frotaveiculos.adapters.db.model.enumerations.Fabricante;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -15,7 +13,10 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Veiculo {
+
+    //TODO:PEPINO AQUI NO RELACIONAMENTO COM VIAGEM !!!
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

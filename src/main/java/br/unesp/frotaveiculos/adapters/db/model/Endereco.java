@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Endereco {
 
-    private Integer cep;
+    private String cep;
     private String logradouro;
     private Integer numero;
     private String complemento;
