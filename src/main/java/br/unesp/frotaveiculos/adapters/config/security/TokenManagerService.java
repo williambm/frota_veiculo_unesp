@@ -23,7 +23,7 @@ public class TokenManagerService {
                 .withSubject(usuario.getUsername())                     //A quem destiná-se - userName aqui é o nosso email que será usado como login
                 .withClaim("matricula", usuario.getMatricula())  //Informações extras sobre o usuário
                 .withClaim("email", usuario.getEmail())          //Informações extras sobre o usuário
-                .withClaim("email", usuario.getEmail())          //Informações extras sobre o usuário
+                .withClaim("nome", usuario.getNome())          //Informações extras sobre o usuário
                 .withClaim("roles", String.valueOf(usuario.getPerfilFuncionario()))          //Informações extras sobre o usuário
                 .withExpiresAt(LocalDateTime.now().plusMinutes(30).toInstant(ZoneOffset.of("-03:00")))  //Quando o token expira
                 .sign(Algorithm.HMAC256(senhaToken));   //Algoritimo da senha do token
