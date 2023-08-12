@@ -7,11 +7,10 @@ import java.time.LocalDate;
 
 @Data
 @Builder
-public class FuncionarioDTO {
+public class FuncionarioDTOResponse {
     private Long matricula;
     private String nome;
     private String email;
-    private String senha;
     private LocalDate dataAdmissao;
     private LocalDate dataNascimento;
     private String funcao;

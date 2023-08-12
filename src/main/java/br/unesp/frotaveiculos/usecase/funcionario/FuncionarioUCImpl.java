@@ -1,10 +1,10 @@
 package br.unesp.frotaveiculos.usecase.funcionario;
 
 import br.unesp.frotaveiculos.adapters.db.ports.FuncionarioPersist;
-import br.unesp.frotaveiculos.dto.FuncionarioDTO;
+import br.unesp.frotaveiculos.dto.FuncionarioDTORequest;
+import br.unesp.frotaveiculos.dto.FuncionarioDTOResponse;
 import br.unesp.frotaveiculos.dto.FuncionarioUpdateDTO;
 import br.unesp.frotaveiculos.usecase.funcionario.exceptions.FuncionarioJaCadastradoException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,36 +21,36 @@ public class FuncionarioUCImpl implements FuncionarioUC {
     /**
      * Regra de negócio - não deve permitir seguir jornada caso o usuário já exista em nossas bases.
      *
-     * @param funcionarioDTO
+     * @param funcionarioDTORequest
      * @return
      */
     @Override
-    public FuncionarioDTO cadastrarFuncionario(FuncionarioDTO funcionarioDTO) {
+    public FuncionarioDTORequest cadastrarFuncionario(FuncionarioDTORequest funcionarioDTORequest) {
 
-        if (funcionarioPersist.isFuncionarioCadastrado(funcionarioDTO)) {
+        if (funcionarioPersist.isFuncionarioCadastrado(funcionarioDTORequest)) {
             throw new FuncionarioJaCadastradoException(
                     MessageFormat.format(
                             "O Funcionário {0} de matrícula {1} já está cadastrado.",
-                            funcionarioDTO.getNome(),
-                            funcionarioDTO.getMatricula()
+                            funcionarioDTORequest.getNome(),
+                            funcionarioDTORequest.getMatricula()
                     )
             );
         }
-        return funcionarioPersist.cadastrarFuncionario(funcionarioDTO);
+        return funcionarioPersist.cadastrarFuncionario(funcionarioDTORequest);
     }
 
     @Override
-    public Page<FuncionarioDTO> listarComPaginacao(Pageable pageable) {
+    public Page<FuncionarioDTOResponse> listarComPaginacao(Pageable pageable) {
         return funcionarioPersist.listarFuncionariosPaginado(pageable);
     }
 
     @Override
-    public FuncionarioDTO buscarPorId(Long id) {
+    public FuncionarioDTORequest buscarPorId(Long id) {
         return funcionarioPersist.buscarPorId(id);
     }
 
     @Override
-    public FuncionarioDTO atualizar(Long id, FuncionarioUpdateDTO updateDTO) {
+    public FuncionarioDTORequest atualizar(Long id, FuncionarioUpdateDTO updateDTO) {
         return funcionarioPersist.atualizar(id, updateDTO);
     }
 

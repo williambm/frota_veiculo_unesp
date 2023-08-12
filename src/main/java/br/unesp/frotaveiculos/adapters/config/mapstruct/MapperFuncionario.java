@@ -1,7 +1,8 @@
 package br.unesp.frotaveiculos.adapters.config.mapstruct;
 
 import br.unesp.frotaveiculos.adapters.db.model.Funcionario;
-import br.unesp.frotaveiculos.dto.FuncionarioDTO;
+import br.unesp.frotaveiculos.dto.FuncionarioDTORequest;
+import br.unesp.frotaveiculos.dto.FuncionarioDTOResponse;
 import br.unesp.frotaveiculos.dto.FuncionarioUpdateDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -14,5 +15,8 @@ public interface MapperFuncionario {
     Funcionario convertUpdateDtoEmEntidade(@MappingTarget Funcionario entidade, FuncionarioUpdateDTO updateDTO);
 
     @Mapping(target = "perfil", source = "perfilFuncionario")
-    FuncionarioDTO convertEntidadeEmDTO(Funcionario entidade);
+    FuncionarioDTORequest convertEntidadeEmDTO(Funcionario entidade);
+
+    @Mapping(target = "perfil", source = "perfilFuncionario")
+    FuncionarioDTOResponse convertEntidadeEmResponseDTO(Funcionario entidade);
 }

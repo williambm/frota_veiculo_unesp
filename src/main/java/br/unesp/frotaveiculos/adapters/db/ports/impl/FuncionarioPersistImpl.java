@@ -7,7 +7,8 @@ import br.unesp.frotaveiculos.adapters.db.model.Funcionario;
 import br.unesp.frotaveiculos.adapters.db.model.enumerations.PerfilFuncionario;
 import br.unesp.frotaveiculos.adapters.db.ports.FuncionarioPersist;
 import br.unesp.frotaveiculos.adapters.db.repository.FuncionarioRepository;
-import br.unesp.frotaveiculos.dto.FuncionarioDTO;
+import br.unesp.frotaveiculos.dto.FuncionarioDTORequest;
+import br.unesp.frotaveiculos.dto.FuncionarioDTOResponse;
 import br.unesp.frotaveiculos.dto.FuncionarioUpdateDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,10 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
     private MapperFuncionario mapperFuncionario;
 
     @Override
-    public FuncionarioDTO cadastrarFuncionario(FuncionarioDTO funcionarioDTO) {
+    public FuncionarioDTORequest cadastrarFuncionario(FuncionarioDTORequest funcionarioDTORequest) {
         try {
-            Funcionario entity = converteDTOEmEntidade(funcionarioDTO);
-            String senhaHash = new BCryptPasswordEncoder().encode(funcionarioDTO.getSenha());
+            Funcionario entity = converteDTOEmEntidade(funcionarioDTORequest);
+            String senhaHash = new BCryptPasswordEncoder().encode(funcionarioDTORequest.getSenha());
             System.out.println(senhaHash);
             entity.setSenha(senhaHash);
             //Encode de senha em BCRYPT
@@ -42,20 +43,20 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
 
             entity = repository.save(entity);
             System.out.println(entity);
-            funcionarioDTO = mapperFuncionario.convertEntidadeEmDTO(entity);
+            funcionarioDTORequest = mapperFuncionario.convertEntidadeEmDTO(entity);
         } catch (IllegalArgumentException ex) {
             throw new PerfilInvalidoDBException(MessageFormat.format(
-                    "O perfil {0} não está cadastrado em nossas bases, o que invalida o processo de inserção deste registro.", funcionarioDTO.getPerfil()
+                    "O perfil {0} não está cadastrado em nossas bases, o que invalida o processo de inserção deste registro.", funcionarioDTORequest.getPerfil()
             ));
         } catch (Exception erroGeneralizado) {
             throw erroGeneralizado;
         }
-        return funcionarioDTO;
+        return funcionarioDTORequest;
     }
 
     @Override
-    public Boolean isFuncionarioCadastrado(FuncionarioDTO funcionarioDTO) {
-        Optional<Funcionario> optionalFuncionario = repository.findById(funcionarioDTO.getMatricula());
+    public Boolean isFuncionarioCadastrado(FuncionarioDTORequest funcionarioDTORequest) {
+        Optional<Funcionario> optionalFuncionario = repository.findById(funcionarioDTORequest.getMatricula());
         if (optionalFuncionario.isPresent()) {
             return true;
         } else {
@@ -64,19 +65,20 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
     }
 
     @Override
-    public Page<FuncionarioDTO> listarFuncionariosPaginado(Pageable pageable) {
+    public Page<FuncionarioDTOResponse> listarFuncionariosPaginado(Pageable pageable) {
         Page<Funcionario> listaDeFuncionarios = repository.findAll(pageable);
-        return listaDeFuncionarios.map(entidade -> mapperFuncionario.convertEntidadeEmDTO(entidade));
+//        return listaDeFuncionarios.map(entidade -> mapperFuncionario.convertEntidadeEmDTO(entidade));
+        return listaDeFuncionarios.map(entidade -> mapperFuncionario.convertEntidadeEmResponseDTO(entidade));
     }
 
     @Override
-    public FuncionarioDTO buscarPorId(Long id) {
+    public FuncionarioDTORequest buscarPorId(Long id) {
         Funcionario entidade = repository.findById(id).orElseThrow(FuncionarioDBInexistenteException::new);
         return mapperFuncionario.convertEntidadeEmDTO(entidade);
     }
 
     @Override
-    public FuncionarioDTO atualizar(Long id, FuncionarioUpdateDTO updateDTO) {
+    public FuncionarioDTORequest atualizar(Long id, FuncionarioUpdateDTO updateDTO) {
         try {
             Funcionario entidade = repository.findById(id).orElseThrow();
 
@@ -99,16 +101,16 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
     }
 
     //TODO: agora o projeto já tem o MapStruct - depois passar este Builder para Lá.
-    private static Funcionario converteDTOEmEntidade(FuncionarioDTO funcionarioDTO) {
+    private static Funcionario converteDTOEmEntidade(FuncionarioDTORequest funcionarioDTORequest) {
         return Funcionario.builder()
-                .matricula(funcionarioDTO.getMatricula())
-                .nome(funcionarioDTO.getNome())
-                .email(funcionarioDTO.getEmail())
-                .senha(funcionarioDTO.getSenha())
-                .dataAdmissao(funcionarioDTO.getDataAdmissao())
-                .dataNascimento(funcionarioDTO.getDataNascimento())
-                .funcao(funcionarioDTO.getFuncao())
-                .perfilFuncionario(PerfilFuncionario.valueOf(funcionarioDTO.getPerfil()))
+                .matricula(funcionarioDTORequest.getMatricula())
+                .nome(funcionarioDTORequest.getNome())
+                .email(funcionarioDTORequest.getEmail())
+                .senha(funcionarioDTORequest.getSenha())
+                .dataAdmissao(funcionarioDTORequest.getDataAdmissao())
+                .dataNascimento(funcionarioDTORequest.getDataNascimento())
+                .funcao(funcionarioDTORequest.getFuncao())
+                .perfilFuncionario(PerfilFuncionario.valueOf(funcionarioDTORequest.getPerfil()))
                 .build();
     }
 
