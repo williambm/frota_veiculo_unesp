@@ -32,7 +32,7 @@ public class Funcionario implements UserDetails {
     private LocalDate dataAdmissao;
     private LocalDate dataNascimento;
     private String funcao;
-    @Enumerated(EnumType.STRING) //Esse cara vai ser minhas Roles
+    @Enumerated(EnumType.STRING)
     private PerfilFuncionario perfilFuncionario;
 
     //Colocar a senha no banco em hash

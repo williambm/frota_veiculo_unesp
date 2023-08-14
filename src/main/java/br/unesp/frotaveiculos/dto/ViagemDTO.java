@@ -1,18 +1,16 @@
-package br.unesp.frotaveiculos.adapters.db.model;
+package br.unesp.frotaveiculos.dto;
 
-import jakarta.persistence.Embeddable;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Embeddable
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
-public class Endereco {
+public class ViagemDTO {
 
+    private Long id;
+    private Long solicitanteId;
+    private Long motoristaId;
+    private Long veiculoId;
     private String cep;
     private String logradouro;
     private Integer numero;
@@ -20,4 +18,5 @@ public class Endereco {
     private String bairro;
     private String cidade;
     private String estado;
+    private String campusOrigem;
 }

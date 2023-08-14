@@ -1,5 +1,6 @@
 package br.unesp.frotaveiculos.adapters.db.model;
 
+import br.unesp.frotaveiculos.adapters.db.model.enumerations.StatusViagem;
 import br.unesp.frotaveiculos.adapters.db.model.enumerations.Unidade;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -41,6 +42,12 @@ public class Viagem {
     @Column(name = "campus_origem")
     @Enumerated(EnumType.STRING)
     private Unidade campusOrigem;
+
+    private LocalDateTime dataViagem;
+
+    @Enumerated(EnumType.STRING)
+    private StatusViagem status;
+
 
     //Auditoria
     @CreationTimestamp
