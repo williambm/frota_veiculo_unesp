@@ -99,7 +99,6 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
         repository.deleteById(id);
     }
 
-    //TODO: agora o projeto já tem o MapStruct - depois passar este Builder para Lá.
     private static Funcionario converteDTOEmEntidade(FuncionarioDTO funcionarioDTO) {
         return Funcionario.builder()
                 .matricula(funcionarioDTO.getMatricula())

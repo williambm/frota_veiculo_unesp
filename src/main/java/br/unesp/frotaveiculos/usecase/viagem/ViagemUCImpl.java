@@ -2,9 +2,12 @@ package br.unesp.frotaveiculos.usecase.viagem;
 
 import br.unesp.frotaveiculos.adapters.db.ports.ViagemPersist;
 import br.unesp.frotaveiculos.dto.ViagemDTO;
+import br.unesp.frotaveiculos.dto.ViagemMaisInfoDTO;
 import br.unesp.frotaveiculos.usecase.exceptions.ViagemUCExedePrazoSolicitacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
@@ -25,6 +28,16 @@ public class ViagemUCImpl implements ViagemUC {
         validarPrazoSolicitacao(viagemDTO);
         return viagemPersist.salvar(viagemDTO);
 
+    }
+
+    @Override
+    public Page<ViagemMaisInfoDTO> listarViagensPorFuncionario(Long matricula, Pageable pageable) {
+        return viagemPersist.listarViagensPorFuncionario(matricula, pageable);
+    }
+
+    @Override
+    public Page<ViagemMaisInfoDTO> listarViagens(Pageable pageable) {
+        return viagemPersist.listarViagensPaginado(pageable);
     }
 
     private void validarPrazoSolicitacao(ViagemDTO viagemDTO) {
