@@ -6,6 +6,7 @@ import br.unesp.frotaveiculos.adapters.db.exceptions.PerfilInvalidoDBException;
 import br.unesp.frotaveiculos.adapters.db.exceptions.VeiculoDBInexistenteException;
 import br.unesp.frotaveiculos.dto.ErroPadraoDTO;
 import br.unesp.frotaveiculos.usecase.exceptions.VeiculoUCExcedePrazoFabricacao;
+import br.unesp.frotaveiculos.usecase.exceptions.ViagemUCExedePrazoSolicitacao;
 import br.unesp.frotaveiculos.usecase.funcionario.exceptions.FuncionarioJaCadastradoException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import org.springframework.http.HttpStatus;
@@ -97,6 +98,20 @@ public class ControllerExceptionHandler {
                 .dataHoraErro(LocalDateTime.now())
                 .status(status.value())
                 .error("Token Inválido")
+                .message(ex.getMessage())
+                .build();
+
+        return ResponseEntity.status(status).body(dto);
+    }
+
+    @ExceptionHandler(ViagemUCExedePrazoSolicitacao.class)
+    public ResponseEntity<ErroPadraoDTO> viagemExcedePrazoSolicitacao(ViagemUCExedePrazoSolicitacao ex) {
+        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+
+        ErroPadraoDTO dto = ErroPadraoDTO.builder()
+                .dataHoraErro(LocalDateTime.now())
+                .status(status.value())
+                .error("Erro de Negócio - Viagem")
                 .message(ex.getMessage())
                 .build();
 

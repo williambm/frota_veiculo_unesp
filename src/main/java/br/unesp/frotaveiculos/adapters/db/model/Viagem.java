@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -43,7 +44,7 @@ public class Viagem {
     @Enumerated(EnumType.STRING)
     private Unidade campusOrigem;
 
-    private LocalDateTime dataViagem;
+    private LocalDate dataViagem;
 
     @Enumerated(EnumType.STRING)
     private StatusViagem status;
