@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 @Data
 @Builder
-public class FuncionarioDTORequest {
+public class FuncionarioDTO {
     private Long matricula;
     private String nome;
     private String email;

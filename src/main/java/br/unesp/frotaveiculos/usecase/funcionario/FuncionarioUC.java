@@ -1,20 +1,19 @@
 package br.unesp.frotaveiculos.usecase.funcionario;
 
-import br.unesp.frotaveiculos.dto.FuncionarioDTORequest;
-import br.unesp.frotaveiculos.dto.FuncionarioDTOResponse;
-import br.unesp.frotaveiculos.dto.FuncionarioUpdateDTO;
+import br.unesp.frotaveiculos.dto.FuncionarioDTO;
+import br.unesp.frotaveiculos.dto.FuncionarioDTOSemSenha;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface FuncionarioUC {
 
-    public FuncionarioDTORequest cadastrarFuncionario(FuncionarioDTORequest funcionarioDTORequest);
+    public FuncionarioDTO cadastrarFuncionario(FuncionarioDTO funcionarioDTO);
 
-    Page<FuncionarioDTOResponse> listarComPaginacao(Pageable pageable);
+    Page<FuncionarioDTOSemSenha> listarComPaginacao(Pageable pageable);
 
-    FuncionarioDTORequest buscarPorId(Long id);
+    FuncionarioDTO buscarPorId(Long id);
 
-    FuncionarioDTORequest atualizar(Long id, FuncionarioUpdateDTO updateDTO);
+    FuncionarioDTO atualizar(Long id, FuncionarioDTO updateDTO);
 
     void deletar(Long id);
 }

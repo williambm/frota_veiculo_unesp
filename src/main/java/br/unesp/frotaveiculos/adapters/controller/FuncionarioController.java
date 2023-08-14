@@ -1,8 +1,7 @@
 package br.unesp.frotaveiculos.adapters.controller;
 
-import br.unesp.frotaveiculos.dto.FuncionarioDTORequest;
-import br.unesp.frotaveiculos.dto.FuncionarioDTOResponse;
-import br.unesp.frotaveiculos.dto.FuncionarioUpdateDTO;
+import br.unesp.frotaveiculos.dto.FuncionarioDTO;
+import br.unesp.frotaveiculos.dto.FuncionarioDTOSemSenha;
 import br.unesp.frotaveiculos.usecase.funcionario.FuncionarioUC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,31 +18,31 @@ public class FuncionarioController {
     private FuncionarioUC funcionarioUC;
 
     @PostMapping
-    public ResponseEntity<FuncionarioDTORequest> cadastrarFuncionario(@RequestBody FuncionarioDTORequest funcionarioDTORequest) {
-        FuncionarioDTORequest funcionarioCadastrado = funcionarioUC.cadastrarFuncionario(funcionarioDTORequest);
+    public ResponseEntity<FuncionarioDTO> cadastrarFuncionario(@RequestBody FuncionarioDTO funcionarioDTO) {
+        FuncionarioDTO funcionarioCadastrado = funcionarioUC.cadastrarFuncionario(funcionarioDTO);
 
 
         return ResponseEntity.status(HttpStatus.CREATED).body(funcionarioCadastrado);
     }
 
     @GetMapping
-    public ResponseEntity<Page<FuncionarioDTOResponse>> listaFuncionariosPaginado(Pageable pageable) {
-        Page<FuncionarioDTOResponse> funcionariosDTOPage = funcionarioUC.listarComPaginacao(pageable);
+    public ResponseEntity<Page<FuncionarioDTOSemSenha>> listaFuncionariosPaginado(Pageable pageable) {
+        Page<FuncionarioDTOSemSenha> funcionariosDTOPage = funcionarioUC.listarComPaginacao(pageable);
         return ResponseEntity.ok(funcionariosDTOPage);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<FuncionarioDTORequest> buscarPeloId(@PathVariable Long id) {
-        FuncionarioDTORequest funcionarioDTORequest = funcionarioUC.buscarPorId(id);
+    public ResponseEntity<FuncionarioDTO> buscarPeloId(@PathVariable Long id) {
+        FuncionarioDTO funcionarioDTO = funcionarioUC.buscarPorId(id);
 
-        return ResponseEntity.ok().body(funcionarioDTORequest);
+        return ResponseEntity.ok().body(funcionarioDTO);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<FuncionarioDTORequest> atualizaFuncionario(@PathVariable Long id, @RequestBody FuncionarioUpdateDTO updateDTO) {
-        FuncionarioDTORequest funcionarioDTORequest = funcionarioUC.atualizar(id, updateDTO);
+    public ResponseEntity<FuncionarioDTO> atualizaFuncionario(@PathVariable Long id, @RequestBody FuncionarioDTO updateDTO) {
+        FuncionarioDTO funcionarioDTO = funcionarioUC.atualizar(id, updateDTO);
 
-        return ResponseEntity.ok().body(funcionarioDTORequest);
+        return ResponseEntity.ok().body(funcionarioDTO);
     }
 
     @DeleteMapping(value = "/{id}")
