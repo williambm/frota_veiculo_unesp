@@ -16,8 +16,6 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 public class Veiculo {
 
-    //TODO:PEPINO AQUI NO RELACIONAMENTO COM VIAGEM !!!
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

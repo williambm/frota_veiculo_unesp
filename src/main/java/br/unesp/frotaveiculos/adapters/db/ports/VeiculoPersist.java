@@ -1,7 +1,6 @@
 package br.unesp.frotaveiculos.adapters.db.ports;
 
 import br.unesp.frotaveiculos.dto.VeiculoDTO;
-import br.unesp.frotaveiculos.dto.VeiculoUpdateDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,5 +13,5 @@ public interface VeiculoPersist {
 
     void deletar(Long id);
 
-    VeiculoDTO atualizar(Long id, VeiculoUpdateDTO updateDTO);
+    VeiculoDTO atualizar(Long id, VeiculoDTO updateDTO);
 }

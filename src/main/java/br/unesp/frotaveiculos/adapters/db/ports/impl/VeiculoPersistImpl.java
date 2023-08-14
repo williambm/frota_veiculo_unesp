@@ -2,13 +2,11 @@ package br.unesp.frotaveiculos.adapters.db.ports.impl;
 
 import br.unesp.frotaveiculos.adapters.config.mapstruct.MapperVeiculo;
 import br.unesp.frotaveiculos.adapters.db.exceptions.FabricanteInvalidoDBException;
-import br.unesp.frotaveiculos.adapters.db.exceptions.PerfilInvalidoDBException;
 import br.unesp.frotaveiculos.adapters.db.exceptions.VeiculoDBInexistenteException;
 import br.unesp.frotaveiculos.adapters.db.model.Veiculo;
 import br.unesp.frotaveiculos.adapters.db.ports.VeiculoPersist;
 import br.unesp.frotaveiculos.adapters.db.repository.VeiculoRepository;
 import br.unesp.frotaveiculos.dto.VeiculoDTO;
-import br.unesp.frotaveiculos.dto.VeiculoUpdateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,15 +55,14 @@ public class VeiculoPersistImpl implements VeiculoPersist {
     }
 
     @Override
-    public VeiculoDTO atualizar(Long id, VeiculoUpdateDTO updateDTO) {
+    public VeiculoDTO atualizar(Long id, VeiculoDTO updateDTO) {
         try {
             Veiculo entidade = repository.findById(id).orElseThrow();
-            entidade = mapperVeiculo.convertUpdateDtoEmEntidade(entidade, updateDTO);
+            entidade = mapperVeiculo.convertUpdateDtoEmEntidade(updateDTO);
             entidade = repository.save(entidade);
 
             return mapperVeiculo.convertEntidadeEmDto(entidade);
         } catch (NoSuchElementException ex) {
-            //TODO: Atualizar Veículo inexistente está ocasionando erro 500 - mapear
             throw ex;
         } catch (IllegalArgumentException ex) {
             throw new FabricanteInvalidoDBException(MessageFormat.format(

@@ -2,7 +2,6 @@ package br.unesp.frotaveiculos.usecase.veiculo;
 
 import br.unesp.frotaveiculos.adapters.db.ports.VeiculoPersist;
 import br.unesp.frotaveiculos.dto.VeiculoDTO;
-import br.unesp.frotaveiculos.dto.VeiculoUpdateDTO;
 import br.unesp.frotaveiculos.usecase.exceptions.VeiculoUCExcedePrazoFabricacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,9 +45,8 @@ public class VeiculoUCImpl implements VeiculoUC {
     }
 
     @Override
-    public VeiculoDTO atualizar(Long id, VeiculoUpdateDTO updateDTO) {
-        //todo: ajustar isso para que o método seja válido nos casos de cadastro e atualização - talvez unificar DTO - no update estamos sem validação do ano fabricação
-        //validaAnoFabricacao(updateDTO);
+    public VeiculoDTO atualizar(Long id, VeiculoDTO updateDTO) {
+        validaAnoFabricacao(updateDTO);
         return veiculoPersist.atualizar(id, updateDTO);
     }
 
@@ -61,11 +59,12 @@ public class VeiculoUCImpl implements VeiculoUC {
      */
     private void validaAnoFabricacao(VeiculoDTO veiculoDTO) {
         if (veiculoDTO.getAnoFabricacao() < LocalDate.now().minusYears(quantidadeAnosCarroAceitavel).getYear()) {
+            Integer idadeVeiculo = LocalDate.now().getYear() - veiculoDTO.getAnoFabricacao();
             throw new VeiculoUCExcedePrazoFabricacao(
                     MessageFormat.format(
                             "O veículo que está tentando cadastrar possui {0} anos de fabricação. " +
                                     "Isto excede nossa politíca de carros que possuam no máximo {1} anos de fabricação.",
-                            veiculoDTO.getAnoFabricacao(), quantidadeAnosCarroAceitavel
+                            idadeVeiculo, quantidadeAnosCarroAceitavel
                     )
             );
         }

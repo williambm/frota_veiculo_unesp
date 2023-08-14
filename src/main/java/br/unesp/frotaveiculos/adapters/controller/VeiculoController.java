@@ -1,7 +1,6 @@
 package br.unesp.frotaveiculos.adapters.controller;
 
 import br.unesp.frotaveiculos.dto.VeiculoDTO;
-import br.unesp.frotaveiculos.dto.VeiculoUpdateDTO;
 import br.unesp.frotaveiculos.usecase.veiculo.VeiculoUC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,7 +42,7 @@ public class VeiculoController {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<VeiculoDTO> atualizarVeiculo(@PathVariable Long id, @RequestBody VeiculoUpdateDTO updateDTO) {
+    public ResponseEntity<VeiculoDTO> atualizarVeiculo(@PathVariable Long id, @RequestBody VeiculoDTO updateDTO) {
         VeiculoDTO veiculoDTO = veiculoUC.atualizar(id, updateDTO);
 
         return ResponseEntity.ok().body(veiculoDTO);
