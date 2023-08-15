@@ -1,5 +1,7 @@
 package br.unesp.frotaveiculos.adapters.db.ports.impl;
 
+import br.unesp.frotaveiculos.adapters.db.exceptions.MotoristaDBNaoLocalizadoException;
+import br.unesp.frotaveiculos.adapters.db.exceptions.ViagemDBNaoLocalizadaException;
 import br.unesp.frotaveiculos.adapters.db.model.Endereco;
 import br.unesp.frotaveiculos.adapters.db.model.Funcionario;
 import br.unesp.frotaveiculos.adapters.db.model.Veiculo;
@@ -17,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+
+import java.text.MessageFormat;
 
 @Component
 public class ViagemPersistImpl implements ViagemPersist {
@@ -51,9 +55,17 @@ public class ViagemPersistImpl implements ViagemPersist {
 
     @Override
     public void atribuirMotorista(Long id, MotoristaAtribuicaoDTO dto) {
-        Viagem viagemEntidade = viagemRepository.findById(id).orElseThrow();//TODO: colocar uma exception personalizada aqui
+        Viagem viagemEntidade = viagemRepository.findById(id).orElseThrow(
+                () -> new ViagemDBNaoLocalizadaException(
+                        MessageFormat.format("Não foi possível localizar a Viagem de id:{0}", id)
+                )
+        );
 
-        Funcionario motoristaEntidade = funcionarioRepository.findById(dto.getMotoristaId()).orElseThrow(); //TODO: colocar uma exception personalizada aqui
+        Funcionario motoristaEntidade = funcionarioRepository.findById(dto.getMotoristaId()).orElseThrow(
+                () -> new MotoristaDBNaoLocalizadoException(
+                        MessageFormat.format("Não foi possível localizar o Motorista de matrícula:{0}", dto.getMotoristaId())
+                )
+        );
 
         viagemEntidade.setMotorista(
                 Funcionario.builder()

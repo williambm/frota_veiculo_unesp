@@ -1,9 +1,6 @@
 package br.unesp.frotaveiculos.adapters.controller.handler;
 
-import br.unesp.frotaveiculos.adapters.db.exceptions.FabricanteInvalidoDBException;
-import br.unesp.frotaveiculos.adapters.db.exceptions.FuncionarioDBInexistenteException;
-import br.unesp.frotaveiculos.adapters.db.exceptions.PerfilInvalidoDBException;
-import br.unesp.frotaveiculos.adapters.db.exceptions.VeiculoDBInexistenteException;
+import br.unesp.frotaveiculos.adapters.db.exceptions.*;
 import br.unesp.frotaveiculos.dto.ErroPadraoDTO;
 import br.unesp.frotaveiculos.usecase.exceptions.VeiculoUCExcedePrazoFabricacao;
 import br.unesp.frotaveiculos.usecase.exceptions.ViagemUCExedePrazoSolicitacao;
@@ -112,6 +109,34 @@ public class ControllerExceptionHandler {
                 .dataHoraErro(LocalDateTime.now())
                 .status(status.value())
                 .error("Erro de Negócio - Viagem")
+                .message(ex.getMessage())
+                .build();
+
+        return ResponseEntity.status(status).body(dto);
+    }
+
+    @ExceptionHandler(ViagemDBNaoLocalizadaException.class)
+    public ResponseEntity<ErroPadraoDTO> viagemDBNaoLocalizadaException(ViagemDBNaoLocalizadaException ex) {
+        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+
+        ErroPadraoDTO dto = ErroPadraoDTO.builder()
+                .dataHoraErro(LocalDateTime.now())
+                .status(status.value())
+                .error("Viagem não encontrada - Erro de Integridade DB")
+                .message(ex.getMessage())
+                .build();
+
+        return ResponseEntity.status(status).body(dto);
+    }
+
+    @ExceptionHandler(MotoristaDBNaoLocalizadoException.class)
+    public ResponseEntity<ErroPadraoDTO> motoristaDBNaoLocalizadoException(MotoristaDBNaoLocalizadoException ex) {
+        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+
+        ErroPadraoDTO dto = ErroPadraoDTO.builder()
+                .dataHoraErro(LocalDateTime.now())
+                .status(status.value())
+                .error("Motorista não encontrado - Erro de Integridade DB")
                 .message(ex.getMessage())
                 .build();
 
