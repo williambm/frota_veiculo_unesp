@@ -8,7 +8,9 @@ import br.unesp.frotaveiculos.adapters.db.model.enumerations.PerfilFuncionario;
 import br.unesp.frotaveiculos.adapters.db.model.enumerations.StatusViagem;
 import br.unesp.frotaveiculos.adapters.db.model.enumerations.Unidade;
 import br.unesp.frotaveiculos.adapters.db.ports.ViagemPersist;
+import br.unesp.frotaveiculos.adapters.db.repository.FuncionarioRepository;
 import br.unesp.frotaveiculos.adapters.db.repository.ViagemRepository;
+import br.unesp.frotaveiculos.dto.MotoristaAtribuicaoDTO;
 import br.unesp.frotaveiculos.dto.ViagemDTO;
 import br.unesp.frotaveiculos.dto.ViagemMaisInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class ViagemPersistImpl implements ViagemPersist {
 
     @Autowired
     private ViagemRepository viagemRepository;
+
+    @Autowired
+    private FuncionarioRepository funcionarioRepository;
 
     @Override
     public ViagemDTO salvar(ViagemDTO viagemDTO) {
@@ -42,6 +47,24 @@ public class ViagemPersistImpl implements ViagemPersist {
     public Page<ViagemMaisInfoDTO> listarViagensPaginado(Pageable pageable) {
         Page<Viagem> viagens = viagemRepository.findAll(pageable);
         return viagens.map(viagem -> builderEntitytoMaisInfoDTO(viagem));
+    }
+
+    @Override
+    public void atribuirMotorista(Long id, MotoristaAtribuicaoDTO dto) {
+        Viagem viagemEntidade = viagemRepository.findById(id).orElseThrow();//TODO: colocar uma exception personalizada aqui
+
+        Funcionario motoristaEntidade = funcionarioRepository.findById(dto.getMotoristaId()).orElseThrow(); //TODO: colocar uma exception personalizada aqui
+
+        viagemEntidade.setMotorista(
+                Funcionario.builder()
+                        .matricula(motoristaEntidade.getMatricula())
+                        .perfilFuncionario(PerfilFuncionario.MOTORISTA)
+                        .build()
+        );
+        viagemEntidade.setStatus(StatusViagem.CONFIRMADA);
+
+        viagemRepository.save(viagemEntidade);
+
     }
 
     private static Viagem builderDTOemEntidadeToCreate(ViagemDTO viagemDTO) {
@@ -113,6 +136,9 @@ public class ViagemPersistImpl implements ViagemPersist {
                 .cidade(viagem.getEnderecoDestino().getCidade())
                 .estado(viagem.getEnderecoDestino().getEstado())
                 .campusOrigem(viagem.getCampusOrigem().toString())
+                .statusViagem(viagem.getStatus().toString())
+                .veiculoModelo(viagem.getVeiculo().getModelo())
+                .dataViagem(viagem.getDataViagem())
                 .dataViagem(viagem.getDataViagem())
                 .build();
     }

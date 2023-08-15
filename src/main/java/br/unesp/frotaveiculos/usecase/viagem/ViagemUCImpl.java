@@ -1,6 +1,7 @@
 package br.unesp.frotaveiculos.usecase.viagem;
 
 import br.unesp.frotaveiculos.adapters.db.ports.ViagemPersist;
+import br.unesp.frotaveiculos.dto.MotoristaAtribuicaoDTO;
 import br.unesp.frotaveiculos.dto.ViagemDTO;
 import br.unesp.frotaveiculos.dto.ViagemMaisInfoDTO;
 import br.unesp.frotaveiculos.usecase.exceptions.ViagemUCExedePrazoSolicitacao;
@@ -38,6 +39,11 @@ public class ViagemUCImpl implements ViagemUC {
     @Override
     public Page<ViagemMaisInfoDTO> listarViagens(Pageable pageable) {
         return viagemPersist.listarViagensPaginado(pageable);
+    }
+
+    @Override
+    public void atribuirMotorista(Long id, MotoristaAtribuicaoDTO dto) {
+        viagemPersist.atribuirMotorista(id, dto);
     }
 
     private void validarPrazoSolicitacao(ViagemDTO viagemDTO) {

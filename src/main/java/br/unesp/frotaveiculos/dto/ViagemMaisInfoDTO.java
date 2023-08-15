@@ -21,6 +21,8 @@ public class ViagemMaisInfoDTO {
     private String bairro;
     private String cidade;
     private String estado;
+    private String statusViagem;
+    private String veiculoModelo;
     private String campusOrigem;
     private LocalDate dataViagem;
 }
