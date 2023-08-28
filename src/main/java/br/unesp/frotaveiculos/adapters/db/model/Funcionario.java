@@ -35,6 +35,11 @@ public class Funcionario implements UserDetails {
     @Enumerated(EnumType.STRING)
     private PerfilFuncionario perfilFuncionario;
 
+    //Se remover um registro pai removo o filho, pois não tem sentido ter foto do perfil sem o respectivo perfil de usuário.
+    //Todo: verificar melhores práticas aqui, o sonnar está reclamando desta forma !
+    @OneToOne(cascade = CascadeType.REMOVE)
+    private Imagem imagemPerfil;
+
     //Colocar a senha no banco em hash
     private String senha;
 
@@ -46,19 +51,23 @@ public class Funcionario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        final String PASSAGEIRO = "ROLE_PASSAGEIRO";
+        final String MOTORISTA = "ROLE_MOTORISTA";
+        final String ADMIN = "ROLE_ADMIN";
+
         if (perfilFuncionario.equals(PerfilFuncionario.ADMIN)) {
             return List.of(
-                    new SimpleGrantedAuthority("ROLE_ADMIN"),
-                    new SimpleGrantedAuthority("ROLE_MOTORISTA"),
-                    new SimpleGrantedAuthority("ROLE_PASSAGEIRO")
+                    new SimpleGrantedAuthority(ADMIN),
+                    new SimpleGrantedAuthority(MOTORISTA),
+                    new SimpleGrantedAuthority(PASSAGEIRO)
             );
         } else if (perfilFuncionario.equals(PerfilFuncionario.MOTORISTA)) {
             return List.of(
-                    new SimpleGrantedAuthority("ROLE_MOTORISTA"),
-                    new SimpleGrantedAuthority("ROLE_PASSAGEIRO")
+                    new SimpleGrantedAuthority(MOTORISTA),
+                    new SimpleGrantedAuthority(PASSAGEIRO)
             );
         } else {
-            return List.of(new SimpleGrantedAuthority("ROLE_PASSAGEIRO"));
+            return List.of(new SimpleGrantedAuthority(PASSAGEIRO));
         }
 
     }

@@ -1,5 +1,6 @@
 package br.unesp.frotaveiculos.adapters.db.model;
 
+import br.unesp.frotaveiculos.adapters.db.model.enumerations.CategoriaImg;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,6 +22,7 @@ public class Imagem {
     private Long id;
     private String nomeArquivo;
 
-    private byte[] imagem;
+    private byte[] imagemBinario;
     private Long tamanhoFoto;
+    private CategoriaImg categoriaImg;
 }
