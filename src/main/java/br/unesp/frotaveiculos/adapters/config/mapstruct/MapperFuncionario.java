@@ -12,6 +12,7 @@ public interface MapperFuncionario {
     Funcionario convertUpdateDtoEmEntidade(@MappingTarget Funcionario entidade, FuncionarioDTO updateDTO);
 
     @Mapping(target = "perfil", source = "perfilFuncionario")
+    @Mapping(target = "imagemPerfilId", source = "imagemPerfil.id")
     FuncionarioDTO convertEntidadeEmDTO(Funcionario entidade);
 
     @Mapping(target = "perfil", source = "perfilFuncionario")

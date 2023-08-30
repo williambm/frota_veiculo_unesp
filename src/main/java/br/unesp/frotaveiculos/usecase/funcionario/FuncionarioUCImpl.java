@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.util.Objects;
 
 @Service
 public class FuncionarioUCImpl implements FuncionarioUC {
@@ -35,8 +36,11 @@ public class FuncionarioUCImpl implements FuncionarioUC {
                     )
             );
         }
+        validaCadastroSemFoto(funcionarioDTO);
+
         return funcionarioPersist.cadastrarFuncionario(funcionarioDTO);
     }
+
 
     @Override
     public Page<FuncionarioDTOSemSenha> listarComPaginacao(Pageable pageable) {
@@ -56,5 +60,16 @@ public class FuncionarioUCImpl implements FuncionarioUC {
     @Override
     public void deletar(Long id) {
         funcionarioPersist.deletar(id);
+    }
+
+    /**
+     * Regra de negócio um cadastro deve possuir uma foto associada, o usuário não é obrigado a informar no cadastro.
+     * Se não for informada fica associado a uma foto padrão (Hoje no BD com ID 1)
+     * @param funcionarioDTO
+     */
+    private static void validaCadastroSemFoto(FuncionarioDTO funcionarioDTO) {
+        if(Objects.isNull(funcionarioDTO.getImagemPerfilId())){
+            funcionarioDTO.setImagemPerfilId(1L);
+        }
     }
 }
