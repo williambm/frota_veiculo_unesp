@@ -37,7 +37,7 @@ public class Funcionario implements UserDetails {
 
     //Se remover um registro pai removo o filho, pois não tem sentido ter foto do perfil sem o respectivo perfil de usuário.
     //Todo: verificar melhores práticas aqui, o sonnar está reclamando desta forma !
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(optional = true,orphanRemoval = true)
     private Imagem imagemPerfil;
 
     //Colocar a senha no banco em hash

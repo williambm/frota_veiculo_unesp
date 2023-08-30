@@ -85,6 +85,7 @@ values
 '$2a$10$BiwvDvpIcGosgo7xrz327.15EIKT/eDaekL.s22E6ysG6uPsZhFcq',
 'patricia@gmail.com');
 
+
 --Carga na tabela de Veículos
 INSERT INTO public.veiculos (ano_fabricacao,fabricante,modelo,placa,possui_cacamba,quilometragem,total_passageiros,date_create,date_update) VALUES
 	 (2023,'FORD','Ranger','IPO-1513',true,5000,4,'2023-08-14 10:53:12.391046','2023-08-14 10:53:12.391046'),

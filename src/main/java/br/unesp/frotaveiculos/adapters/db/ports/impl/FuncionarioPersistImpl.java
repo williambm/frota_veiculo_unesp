@@ -4,6 +4,7 @@ import br.unesp.frotaveiculos.adapters.config.mapstruct.MapperFuncionario;
 import br.unesp.frotaveiculos.adapters.db.exceptions.FuncionarioDBInexistenteException;
 import br.unesp.frotaveiculos.adapters.db.exceptions.PerfilInvalidoDBException;
 import br.unesp.frotaveiculos.adapters.db.model.Funcionario;
+import br.unesp.frotaveiculos.adapters.db.model.Imagem;
 import br.unesp.frotaveiculos.adapters.db.model.enumerations.PerfilFuncionario;
 import br.unesp.frotaveiculos.adapters.db.ports.FuncionarioPersist;
 import br.unesp.frotaveiculos.adapters.db.repository.FuncionarioRepository;
@@ -109,6 +110,10 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
                 .dataNascimento(funcionarioDTO.getDataNascimento())
                 .funcao(funcionarioDTO.getFuncao())
                 .perfilFuncionario(PerfilFuncionario.valueOf(funcionarioDTO.getPerfil()))
+                .imagemPerfil(Imagem.builder()
+                        .id(funcionarioDTO.getImagemPerfilId())
+                        .build()
+                )
                 .build();
     }
 
