@@ -34,12 +34,8 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
     public FuncionarioDTO cadastrarFuncionario(FuncionarioDTO funcionarioDTO) {
         try {
             Funcionario entity = converteDTOEmEntidade(funcionarioDTO);
-            String senhaHash = new BCryptPasswordEncoder().encode(funcionarioDTO.getSenha());
-            System.out.println(senhaHash);
+            String senhaHash = encriptaSenha(funcionarioDTO);
             entity.setSenha(senhaHash);
-            //Encode de senha em BCRYPT
-            //entity.setSenha(new BCryptPasswordEncoder().encode(entity.getSenha()));
-            System.out.println(entity.getSenha());
 
             entity = repository.save(entity);
             System.out.println(entity);
@@ -53,6 +49,7 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
         }
         return funcionarioDTO;
     }
+
 
     @Override
     public Boolean isFuncionarioCadastrado(FuncionarioDTO funcionarioDTO) {
@@ -83,6 +80,8 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
             Funcionario entidade = repository.findById(id).orElseThrow();
 
             entidade = mapperFuncionario.convertUpdateDtoEmEntidade(entidade, updateDTO);
+            String senhaHash = encriptaSenha(updateDTO);
+            entidade.setSenha(senhaHash);
             entidade = repository.save(entidade);
 
             return mapperFuncionario.convertEntidadeEmDTO(entidade);
@@ -98,6 +97,11 @@ public class FuncionarioPersistImpl implements FuncionarioPersist {
     @Override
     public void deletar(Long id) {
         repository.deleteById(id);
+    }
+
+    private static String encriptaSenha(FuncionarioDTO funcionarioDTO) {
+        String senhaHash = new BCryptPasswordEncoder().encode(funcionarioDTO.getSenha());
+        return senhaHash;
     }
 
     private static Funcionario converteDTOEmEntidade(FuncionarioDTO funcionarioDTO) {

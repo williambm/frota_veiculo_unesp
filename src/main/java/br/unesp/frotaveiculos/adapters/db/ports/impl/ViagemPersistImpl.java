@@ -107,6 +107,7 @@ public class ViagemPersistImpl implements ViagemPersist {
                                 .perfilFuncionario(PerfilFuncionario.valueOf("PASSAGEIRO"))
                                 .build()
                 )
+                .passageirosObservacoes(viagemDTO.getPassageirosObservacoes())
                 .build();
     }
 

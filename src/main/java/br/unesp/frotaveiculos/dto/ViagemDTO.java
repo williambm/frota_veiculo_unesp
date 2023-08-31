@@ -24,4 +24,5 @@ public class ViagemDTO {
     private String estado;
     private String campusOrigem;
     private LocalDate dataViagem;
+    private String passageirosObservacoes;
 }

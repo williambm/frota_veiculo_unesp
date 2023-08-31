@@ -49,6 +49,8 @@ public class Viagem {
     @Enumerated(EnumType.STRING)
     private StatusViagem status;
 
+    private String passageirosObservacoes;
+
 
     //Auditoria
     @CreationTimestamp
