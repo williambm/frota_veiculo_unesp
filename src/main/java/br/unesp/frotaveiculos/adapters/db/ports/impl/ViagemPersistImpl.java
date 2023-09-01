@@ -15,12 +15,14 @@ import br.unesp.frotaveiculos.adapters.db.repository.ViagemRepository;
 import br.unesp.frotaveiculos.dto.MotoristaAtribuicaoDTO;
 import br.unesp.frotaveiculos.dto.ViagemDTO;
 import br.unesp.frotaveiculos.dto.ViagemMaisInfoDTO;
+import br.unesp.frotaveiculos.dto.ViagensStatusCountDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.text.MessageFormat;
+import java.util.List;
 
 @Component
 public class ViagemPersistImpl implements ViagemPersist {
@@ -77,6 +79,12 @@ public class ViagemPersistImpl implements ViagemPersist {
 
         viagemRepository.save(viagemEntidade);
 
+    }
+
+    @Override
+    public List<ViagensStatusCountDTO> buscaHistoricoDeSolicitacoesPorCategoria() {
+        List<ViagensStatusCountDTO> respostaQuery = viagemRepository.countGroupByStatus();
+        return respostaQuery;
     }
 
     private static Viagem builderDTOemEntidadeToCreate(ViagemDTO viagemDTO) {
